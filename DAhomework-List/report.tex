@@ -1,4 +1,4 @@
-\documentclass[UTF8]{ctexart}
+documentclass[UTF8]{ctexart}
 \usepackage{geometry, CJKutf8}
 \usepackage[affil-it]{authblk}
 \geometry{margin=1.5cm, vmargin={0pt,1cm}}
@@ -30,90 +30,61 @@
 \lhead{桑田， 3230105603}
 \chead{数据结构与算法第四次作业}
 
-
-
-\begin{document}
-
-\pagestyle{fancy}
-\fancyhead{}
-\lhead{蔡徐坤, 3230100001}
-\chead{数据结构与算法第四次作业}
-\rhead{Oct.16th, 2024}
-
 \section{测试程序的设计思路}
 
-这个测试文件主要是为了验证一个自定义的 List 类的功能和行为是否符合预期。该文件通过一系列的函数调用和操作来测试 List 类的各种方法和特性，包括构造函数、赋值操作、数据插入、删除、迭代器操作等。下面是详细的测试思路和各部分的功能测试：
+这个测试文件主要是为了验证一个自定义的 \textbf{List} 类的功能和行为是否符合预期。该文件通过一系列的函数调用和操作来测试 \textbf{List} 类的各种方法和特性，包括构造函数、赋值操作、数据插入、删除、迭代器操作等。下面是详细的测试思路和各部分的功能测试：
 
-测试构造函数：
+\textbf{测试构造函数}：
 
-使用默认构造函数创建一个 List<int> 类型的对象intList并打印测试通过的信息。
-测试 push_back 和 push_front 方法：
+使用默认构造函数创建一个 \textbf{List<int>} 类型的对象 \textbf{intList} 并打印测试通过的信息。
 
-在 intList 中使用 push_back 方法添加一个元素 1。
-使用 push_front 方法在 intList 的前端插入一个元素 0。
+\textbf{测试 push\_back 和 push\_front 方法}：
+
+在 \textbf{intList} 中使用 \textbf{push\_back} 方法添加一个元素 1。
+使用 \textbf{push\_front} 方法在 \textbf{intList} 的前端插入一个元素 0。
 打印测试通过的信息。
-测试 front 和 back 方法：
 
-打印 intList 的首元素和尾元素，并验证是否分别为 0 和 1。
-测试拷贝构造函数：
+\textbf{测试 front 和 back 方法}：
 
-创建一个新的 List<int> 对象 copiedList通过拷贝构造函数从 intList 拷贝数据。
+打印 \textbf{intList} 的首元素和尾元素，并验证是否分别为 0 和 1。
+
+\textbf{测试拷贝构造函数}：
+
+创建一个新的 \textbf{List<int>} 对象 \textbf{copiedList} 通过拷贝构造函数从 \textbf{intList} 拷贝数据。
 打印测试通过的信息。
-测试移动构造函数：
 
-创建一个新的 List<int> 对象 movedList通过移动构造函数从 intList 移动数据。
-打印测试通过的信息，并验证 intList 是否已经为空\(size为0\)。
-测试 insert 和迭代器：
+\textbf{测试移动构造函数}：
 
-创建一个新的 List<int> 对象 anotherList 并添加一个元素 10。
-使用迭代器 it 在 anotherList 的起始位置插入元素 5。
+创建一个新的 \textbf{List<int>} 对象 \textbf{movedList} 通过移动构造函数从 \textbf{intList} 移动数据。
+打印测试通过的信息，并验证 \textbf{intList} 是否已经为空（\textbf{size} 为 0）。
+
+\textbf{测试 insert 和迭代器}：
+
+创建一个新的 \textbf{List<int>} 对象 \textbf{anotherList} 并添加一个元素 10。
+使用迭代器 \textbf{it} 在 \textbf{anotherList} 的起始位置插入元素 5。
 打印测试通过的信息。
-测试 erase 方法：
 
-使用 erase 方法移除 anotherList 中的第一个元素。
+\textbf{测试 erase 方法}：
+
+使用 \textbf{erase} 方法移除 \textbf{anotherList} 中的第一个元素。
 打印测试通过的信息。
-测试赋值操作符：
 
-创建一个新的 List<int> 对象 assignedList。
-使用赋值操作符将 movedList 的内容赋值给 assignedList。
+\textbf{测试赋值操作符}：
+
+创建一个新的 \textbf{List<int>} 对象 \textbf{assignedList}。
+使用赋值操作符将 \textbf{movedList} 的内容赋值给 \textbf{assignedList}。
 打印测试通过的信息。
-测试 pop_front 和 pop_back 方法：
 
-从 assignedList 中分别移除首元素和尾元素。
+\textbf{测试 pop\_front 和 pop\_back 方法}：
+
+从 \textbf{assignedList} 中分别移除首元素和尾元素。
 打印测试通过的信息。
-测试 clear 和 empty 方法：
 
-清空 assignedList 并验证它是否为空。
+\textbf{测试 clear 和 empty 方法}：
+
+清空 \textbf{assignedList} 并验证它是否为空。
 打印测试通过的信息。
-测试迭代器的增减操作：
 
-在 main 函数中创建一个新的 List<int> 对象 myList 并填充数据。
-使用前置和后置的 ++ 和 -- 运算符来遍历 myList，验证迭代器的行为是否正确。
-总结：
+\textbf{测试迭代器的增减操作}：
 
-打印所有基本测试通过的信息。
-这个测试文件全面地测试了 List 类的基本功能，确保各个方法按预期工作，同时也验证了迭代器的正确实现和行为。这样的测试是确保数据结构正确实现的重要步骤。
-
-\section{测试的结果}
-
-测试结果一切正常。
-
-我用 valgrind 进行测试，发现没有发生内存泄露。
-
-\section{bug报告}
-
-我发现了insert的一个潜在bug,并且改进了erase,使得其在head或者tail或nullptr时报错!!
-
-\begin{enumerate}
-    \item 首先如果指针在head的时候我很容易发现其逻辑有误,原代码中会在head前再创建一个node显然不合理,于是我分情况解决了这个问题
- 
-\end{enumerate}
-
-
-\end{document}
-
-
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: t
-%%% End: 
+在 \textbf{main} 函数中创建一个新的 \textbf{List<int>} 对象 \textbf{myList} 并填充数据
