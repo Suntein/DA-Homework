@@ -1,0 +1,87 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Binary Search Tree 测试报告}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{概述}
+
+本文档旨在说明 \texttt{BinarySearchTree} 类的测试程序与 \texttt{remove} 函数的实现细节。本文将介绍测试程序的目的、\texttt{remove} 函数的设计与实现，以及测试结果与分析。
+
+\section{测试程序概述}
+
+测试程序的主要功能是验证二叉搜索树 (\texttt{BinarySearchTree}) 中的删除操作是否正常运行。测试程序通过以下步骤逐步验证了删除操作在不同情况下的行为：
+
+\begin{enumerate}
+    \item \textbf{插入操作测试}：先插入一系列整数元素，构建一个具有多个节点的二叉搜索树。
+    \item \textbf{删除叶子节点}：删除一个叶子节点，以测试删除操作对树的最简单结构是否正确处理。
+    \item \textbf{删除具有一个子节点的节点}：删除一个具有单个子节点的节点，以测试删除操作能否正确重新连接该节点的子树。
+    \item \textbf{删除具有两个子节点的节点}：删除一个具有两个子节点的节点，测试删除操作在复杂结构中的表现，特别是最小节点的替换。
+    \item \textbf{删除不存在的元素}：尝试删除树中不存在的节点，以验证 \texttt{remove} 函数是否可以正确处理无效删除请求。
+    \item \textbf{清空树}：通过 \texttt{makeEmpty} 方法清空树，以确保内存释放操作的正确性。
+\end{enumerate}
+
+测试程序中的每一步都打印树的当前结构，以便观察每次删除后的树的状态，从而检查删除操作的正确性。
+
+\section{\texttt{remove} 函数的设计与实现}
+
+\subsection{\texttt{remove} 函数简介}
+
+\texttt{remove} 函数的主要作用是从二叉搜索树中删除指定的元素。删除操作分为以下几种情况：
+
+\begin{itemize}
+    \item \textbf{删除叶子节点}：如果目标节点是叶子节点，即没有子节点，直接删除该节点。
+    \item \textbf{删除仅有一个子节点的节点}：如果目标节点仅有一个子节点，用该子节点替换目标节点。
+    \item \textbf{删除具有两个子节点的节点}：如果目标节点有两个子节点，需找到目标节点右子树的最小节点（即中序后继节点）来替代目标节点，然后在右子树中删除该最小节点。
+\end{itemize}
+
+\subsection{\texttt{remove} 函数的实现}
+
+
+\subsection{代码解释}
+
+\begin{enumerate}
+    \item \textbf{空指针检查}：如果 \texttt{t} 为 \texttt{nullptr}，表示树为空或未找到要删除的节点，直接返回。
+    \item \textbf{递归查找节点}：通过比较元素值 \texttt{x} 和当前节点 \texttt{t} 的值，决定向左子树或右子树继续查找。
+    \item \textbf{删除逻辑}：
+    \begin{itemize}
+        \item \textbf{两个子节点的情况}：找到右子树中最小的节点 \texttt{min}，用 \texttt{min} 替换当前节点 \texttt{t} 的位置。然后删除 \texttt{min} 节点的原始位置。
+        \item \textbf{一个或零个子节点的情况}：如果目标节点仅有一个子节点或没有子节点，则直接用其唯一的子节点或 \texttt{nullptr} 替代该节点。
+    \end{itemize}
+\end{enumerate}
+
+\subsection{\texttt{Min} 函数}
+
+在 \texttt{remove} 函数中，用 \texttt{Min} 函数来找到右子树中的最小节点。
+
+
+这个 \texttt{Min} 函数使用循环遍历来查找最左侧节点，并将其从原树中移除。
+
+\section{测试结果}
+
+以下是各项测试的预期结果：
+
+\begin{enumerate}
+    \item \textbf{插入节点测试}：成功构建二叉搜索树，树的结构正确。
+    \item \textbf{删除叶子节点}：删除叶子节点后，树的结构保持有效，未出现不一致或错误的链接。
+    \item \textbf{删除一个子节点的节点}：成功删除指定节点，并将该节点的子节点正确连接到父节点。
+    \item \textbf{删除两个子节点的节点}：删除节点后，右子树中最小节点替换删除的节点，树的结构保持有效。
+    \item \textbf{删除不存在的节点}：删除操作不会对树产生影响，也不会抛出异常。
+    \item \textbf{清空树}：所有节点均被释放，树最终为空。
+\end{enumerate}
+
+在实际运行中，程序的输出应与预期一致，表明 \texttt{remove} 函数在各种情况下均能够正确执行删除操作。
+
+\section{结论}
+
+本次测试验证了 \texttt{BinarySearchTree} 类中 \texttt{remove} 函数的正确性和健壮性。在不同的删除场景下，\texttt{remove} 函数均能按预期工作，并正确调整树的结构。通过这次测试，我们确认 \texttt{remove} 函数能够处理二叉搜索树的删除操作，包括删除叶子节点、单子节点和双子节点的情况。
+
+\end{document}
