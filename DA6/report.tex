@@ -1,0 +1,54 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{amsmath}
+\usepackage{geometry}
+
+% 设置页面边距
+\geometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+
+\begin{document}
+
+\section*{1.删除逻辑} 
+函数首先找到要删除的节点 $x$ 在树中的位置。它采用二叉树删除的常规方式：
+\begin{itemize}
+    \item 如果 $x < t \rightarrow \text{element}$，则递归到左子树 $t \rightarrow \text{left}$。
+    \item 如果 $x > t \rightarrow \text{element}$，则递归到右子树 $t \rightarrow \text{right}$。
+    \item 如果 $x = t \rightarrow \text{element}$，说明找到了要删除的节点。
+\end{itemize}
+
+\section*{2. 删除节点}
+找到节点后，根据节点的左右子树情况分几种情况进行处理：
+\begin{itemize}
+    \item \textbf{情况1}：节点有两个子节点。在这种情况下，需要找到右子树中的最小节点替代被删除的节点。具体过程如下：
+    \begin{itemize}
+        \item 调用 $\text{detachMin}(t \rightarrow \text{right})$，从右子树中找到最小节点并将其从树中分离。
+        \item 将 $\text{minNode}$ 的左右子节点分别指向被删除节点的左、右子树。
+        \item 用 $\text{minNode}$ 替代 $t$，即将 $t$ 指向 $\text{minNode}$。
+    \end{itemize}
+    
+    \item \textbf{情况2}：节点只有一个子节点或没有子节点。在这种情况下，可以直接用其子节点代替自己。具体过程如下：
+    \begin{itemize}
+        \item 将 $t$ 指向 $t \rightarrow \text{left}$ 或 $t \rightarrow \text{right}$（若存在子节点），否则指向 $\text{nullptr}$。
+        \item 删除旧的节点 $\text{oldNode}$ 释放内存。
+
+    \end{itemize}
+\end{itemize}
+
+
+
+\section*{3. 平衡调整}
+删除节点后，可能会破坏 AVL 树的平衡性质，因此需要进行旋转调整。根据 AVL 树的定义，任何节点的左、右子树高度差不超过 1。为了恢复平衡，该函数计算 $\text{balance}$，即 $t \rightarrow \text{left}$ 和 $t \rightarrow \text{right}$ 的高度差，并根据 $\text{balance}$ 的不同情况选择合适的旋转方式：
+\begin{itemize}
+    \item \textbf{左子树高度大于右子树}（$\text{balance} > 1$）：
+    \begin{itemize}
+        \item 如果左子树的左子树高度大于或等于左子树的右子树高度，即 $\text{getHeight}(t \rightarrow \text{left} \rightarrow \text{left}) \geq \text{getHeight}(t \rightarrow \text{left} \rightarrow \text{right})$，执行单旋转 $\text{rotateWithLeftChild}(t)$。
+        \item 否则，执行双旋转 $\text{doubleWithLeftChild}(t)$。
+    \end{itemize}
+    
+    \item \textbf{右子树高度大于左子树}（$\text{balance} < -1$）：
+    \begin{itemize}
+        \item 如果右子树的右子树高度大于或等于右子树的左子树高度，即 $\text{getHeight}(t \rightarrow \text{right} \rightarrow \text{right}) \geq \text{getHeight}(t \rightarrow \text{right} \rightarrow \text{left})$，执行单旋转 $\text{rotateWithRightChild}(t)$。
+        \item 否则，执行双旋转 $\text{doubleWithRightChild}(t)$。
+    \end{itemize}
+\end{itemize}
+
+\end{document}
