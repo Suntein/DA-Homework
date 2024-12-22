@@ -1,0 +1,129 @@
+\documentclass[12pt]{ctexart}
+\usepackage{amsmath,amssymb,geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\geometry{a4paper, margin=1in}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    breaklines=true,
+    showstringspaces=false,
+}
+
+\title{四则运算计算器Project}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{功能概述}
+本项目实现了一个表达式计算器，其主要功能包括：
+\begin{enumerate}
+    \item 支持将中缀表达式转换为后缀表达式（逆波兰表达式）。
+    \item 支持计算后缀表达式的值。
+    \item 识别非法表达式，包括括号不匹配、连续运算符、非法的表达式开头或结尾，以及除数为零等情况。
+    \item 支持负数运算（如 $1 + -2.1$ 是合法的，但 $1++2.1$ 是非法的）。
+    \item 支持科学计数法（如 $-1+2e2$ 是合法的）。
+    \item 当出现非法行为时会标注非法类型：如divided by zero or Invalid Expression。
+\end{enumerate}
+
+\section*{功能详细说明}
+
+\subsection*{1. 非法表达式检测}
+代码实现了以下几种非法表达式的检测：
+\begin{itemize}
+    \item \textbf{括号不匹配}：使用栈操作检查括号匹配情况。如果右括号多于左括号，或表达式结束时栈中仍有未匹配的左括号，则表达式非法。
+    \item \textbf{连续运算符}：判断相邻字符是否均为运算符（如 $1++2$ 或 $1+-+2$），如果是，则表达式非法。
+    \item \textbf{非法开头或结尾}：表达式不能以运算符开头（如 $+1-2$）或以运算符结尾（如 $1+$）。
+    \item \textbf{除数为零}：在后缀表达式计算时，检测除法操作的分母是否为零，若是，则抛出异常。
+\end{itemize}
+
+\subsection*{2. 支持负数}
+负数的处理通过上下文判断实现：
+\begin{itemize}
+    \item 如果负号出现在表达式的开头，或在另一个运算符后面（如 $1 + -2$），则将其视为负数。
+    \item 例如，表达式 $1 + -2.1$ 被正确识别为合法表达式，并转换为后缀表达式 $1\ 2.1\ -\ +$。
+\end{itemize}
+
+\subsection*{3. 支持科学计数法}
+科学计数法的支持通过对 $e$ 操作符的特殊处理实现：
+\begin{itemize}
+    \item 在中缀转后缀阶段，$e$ 被识别为一个高优先级运算符。
+    \item 在后缀表达式计算阶段，$a \cdot 10^b$ 的计算通过 $\texttt{pow(10, b)}$ 实现。
+    \item 例如，$1 + 2e2$ 转换为后缀表达式 $1\ 2\ 2\ e\ +$，计算结果为 $201$。
+\end{itemize}
+
+\section*{测试用例}
+
+\subsection*{合法表达式测试}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{表达式} & \textbf{说明}                & \textbf{结果} \\ \hline
+$1+2$           & 简单加法                    & $3$          \\ \hline
+$1+-2$          & 包含负数                    & $-1$         \\ \hline
+$-1+2$          & 表达式开头为负数            & $1$          \\ \hline
+$3*(1+2)$       & 含括号的表达式              & $9$          \\ \hline
+$1+2e2$         & 科学计数法                  & $201$        \\ \hline
+$1+-2.1$        & 小数与负数                  & $-1.1$       \\ \hline
+$(3+5)*2$       & 含括号的表达式              & $16$         \\ \hline
+$1+2e-1$        & 科学计数法指数为负          & $1.2$        \\ \hline
+$-2*(3+4)$      & 负数与括号                  & $-14$        \\ \hline
+$1e3+2e-2$      & 科学计数法混合              & $1000.02$    \\ \hline
+\end{tabular}
+\caption{合法表达式测试用例}
+\end{table}
+
+\subsection*{非法表达式测试}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{表达式} & \textbf{说明}          & \textbf{错误信息}      \\ \hline
+$1++2$          & 连续运算符            & Invalid expression     \\ \hline
+$(1+2$          & 括号不匹配            & Invalid expression     \\ \hline
+$1+2)$          & 括号不匹配            & Invalid expression     \\ \hline
+$+1-2$          & 以运算符开头          & Invalid expression     \\ \hline
+$1/0$           & 除数为零              & Division by zero       \\ \hline
+$1e$            & 科学计数法不完整      & Invalid expression     \\ \hline
+$1+e2$          & 科学计数法不完整      & Invalid expression     \\ \hline
+\end{tabular}
+\caption{非法表达式测试用例}
+\end{table}
+
+\section*{核心实现逻辑}
+\subsection*{1. 中缀转后缀表达式}
+\begin{itemize}
+    \item 遍历表达式字符串：
+    \begin{itemize}
+        \item 如果是数字或小数点，将其追加到当前数字字符串中。
+        \item 如果是运算符，比较其优先级，将优先级较高或相等的运算符弹出到结果中。
+        \item 如果是括号，左括号直接入栈，右括号将栈中操作符弹出直到匹配左括号。
+    \end{itemize}
+    \item 处理结束后，将剩余的数字和运算符依次加入结果。
+\end{itemize}
+
+\subsection*{2. 后缀表达式计算}
+\begin{itemize}
+    \item 遍历后缀表达式：
+    \begin{itemize}
+        \item 如果是数字，将其转换为浮点数并压入栈中。
+        \item 如果是操作符，弹出栈顶两个操作数，执行相应运算，将结果重新压入栈。
+        \item 如果检测到非法运算（如栈中元素不足或除数为零），抛出异常。
+    \end{itemize}
+\end{itemize}
+
+\section*{总结}
+本项目实现了一个功能完整的表达式计算器，支持负数、小数、科学计数法，并对常见非法表达式提供了有效的检测和错误处理机制。代码结构清晰，易于维护，可扩展性强。
+\end{document}
