@@ -48,13 +48,13 @@ vector<string> zhuanhuan(string str){
     string number;
     for(int i=0;i<str.size();i++){
         char c=str[i];
-        if(number.empty()){
-            if(c=='-'){
-                if(i==0||isOperator(str[i-1]))
-                    number +="-";
-                    continue;
-            }
-        }
+        // if(number.empty()){
+        //     if(c=='-'){
+        //         if(i==0||isOperator(str[i-1]))
+        //             number +="-";
+        //             continue;
+        //     }
+        // }
         if(Isdigit(c)||c=='.'){
             number+=c;
         }else{
